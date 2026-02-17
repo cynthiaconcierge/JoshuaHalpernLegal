@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from "lucide
 interface VideoItem {
   id: number;
   src: string;
+  poster: string;
   title: string;
 }
 
@@ -11,11 +12,11 @@ const VIDEO_BASE =
   "https://github.com/cynthiaconcierge/JoshuaHalpernLegal/releases/download/videos";
 
 const VIDEOS: VideoItem[] = [
-  { id: 1, src: `${VIDEO_BASE}/1.mp4`, title: "" },
-  { id: 2, src: `${VIDEO_BASE}/3.mp4`, title: "" },
-  { id: 3, src: `${VIDEO_BASE}/2.mp4`, title: "" },
-  { id: 4, src: `${VIDEO_BASE}/5.mp4`, title: "" },
-  { id: 5, src: `${VIDEO_BASE}/6.mp4`, title: "" },
+  { id: 1, src: `${VIDEO_BASE}/1.mp4`, poster: `${VIDEO_BASE}/1.jpg`, title: "" },
+  { id: 2, src: `${VIDEO_BASE}/3.mp4`, poster: `${VIDEO_BASE}/3.jpg`, title: "" },
+  { id: 3, src: `${VIDEO_BASE}/2.mp4`, poster: `${VIDEO_BASE}/2.jpg`, title: "" },
+  { id: 4, src: `${VIDEO_BASE}/5.mp4`, poster: `${VIDEO_BASE}/5.jpg`, title: "" },
+  { id: 5, src: `${VIDEO_BASE}/6.mp4`, poster: `${VIDEO_BASE}/6.jpg`, title: "" },
 ];
 
 const VideoCard: React.FC<{ video: VideoItem }> = ({ video }) => {
@@ -24,6 +25,7 @@ const VideoCard: React.FC<{ video: VideoItem }> = ({ video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showControls, setShowControls] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -34,6 +36,12 @@ const VideoCard: React.FC<{ video: VideoItem }> = ({ video }) => {
         const vid = videoRef.current;
         if (!vid) return;
         if (entry.isIntersecting) {
+          // Lazy-load: set src only when card scrolls into view
+          if (!videoLoaded) {
+            vid.src = video.src;
+            vid.load();
+            setVideoLoaded(true);
+          }
           vid.play().then(() => setIsPlaying(true)).catch(() => {});
         } else {
           vid.pause();
@@ -45,7 +53,7 @@ const VideoCard: React.FC<{ video: VideoItem }> = ({ video }) => {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [video.src, videoLoaded]);
 
   const togglePlay = useCallback(() => {
     const vid = videoRef.current;
@@ -86,12 +94,12 @@ const VideoCard: React.FC<{ video: VideoItem }> = ({ video }) => {
       >
         <video
           ref={videoRef}
-          src={video.src}
+          poster={video.poster}
           className="absolute inset-0 w-full h-full object-cover"
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
         />
 
         {/* Gradient overlays */}
