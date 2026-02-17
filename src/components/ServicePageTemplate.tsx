@@ -205,9 +205,9 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
             </p>
           </div>
           <div className="flex justify-center gap-6 mb-6 text-sm">
-            <a href="#" className="hover:text-blue-400 transition-colors">Email</a>
-            <a href="#" className="hover:text-blue-400 transition-colors">Phone</a>
-            <a href="#" className="hover:text-blue-400 transition-colors">LinkedIn</a>
+            <Link to="/terms" className="hover:text-blue-400 transition-colors">Terms &amp; Conditions</Link>
+            <Link to="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
+            <Link to="/payment-policy" className="hover:text-blue-400 transition-colors">Payment &amp; Refund Policy</Link>
           </div>
           <p className="text-xs text-slate-600 mb-6">
             LLC Formation &bull; Estate Planning &bull; Contracts &bull; IP Protection &bull; Real Estate &bull; Business Law

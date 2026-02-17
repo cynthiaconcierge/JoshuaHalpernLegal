@@ -23,6 +23,9 @@ import ContractDrafting from "./pages/services/ContractDrafting";
 import BrandProtection from "./pages/services/BrandProtection";
 import RealEstateLLC from "./pages/services/RealEstateLLC";
 import WebsiteCompliance from "./pages/services/WebsiteCompliance";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import PaymentPolicy from "./pages/PaymentPolicy";
 
 const Layout = () => {
   const location = useLocation();
@@ -45,6 +48,9 @@ const Layout = () => {
         <Route path="/services/brand-protection" element={<BrandProtection />} />
         <Route path="/services/real-estate-llc" element={<RealEstateLLC />} />
         <Route path="/services/website-compliance" element={<WebsiteCompliance />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/payment-policy" element={<PaymentPolicy />} />
         <Route path="/thank-you" element={<ThankYou />} />
       </Routes>
     </>
