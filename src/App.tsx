@@ -25,13 +25,14 @@ import RealEstateLLC from "./pages/services/RealEstateLLC";
 import WebsiteCompliance from "./pages/services/WebsiteCompliance";
 import LawyerOnCall from "./pages/services/LawyerOnCall";
 import Formation from "./pages/Formation";
+import FormationIntake from "./pages/FormationIntake";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import PaymentPolicy from "./pages/PaymentPolicy";
 
 const Layout = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/askmeanything" || location.pathname === "/thank-you";
+  const hideNavbar = location.pathname === "/askmeanything" || location.pathname === "/thank-you" || location.pathname === "/formation/intake";
 
   return (
     <>
@@ -52,6 +53,7 @@ const Layout = () => {
         <Route path="/services/website-compliance" element={<WebsiteCompliance />} />
         <Route path="/services/lawyer-on-call" element={<LawyerOnCall />} />
         <Route path="/formation" element={<Formation />} />
+        <Route path="/formation/intake" element={<FormationIntake />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/payment-policy" element={<PaymentPolicy />} />

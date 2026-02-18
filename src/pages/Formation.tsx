@@ -335,15 +335,13 @@ const Formation: React.FC = () => {
                 BS.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://buy.stripe.com/cNi9ATgqm8Mh7G19Gy3oA03"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/formation/intake"
                   className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 px-10 rounded-xl shadow-[0_0_30px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 transition-all text-lg"
                 >
                   Get Started Now
                   <ArrowRight className="w-5 h-5" />
-                </a>
+                </Link>
                 <Link
                   to="/contact"
                   className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white font-bold py-4 px-10 rounded-xl border border-white/20 hover:border-white/30 transform hover:-translate-y-1 transition-all text-lg"
