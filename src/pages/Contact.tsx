@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Scale,
@@ -12,6 +12,16 @@ import {
 } from "lucide-react";
 
 const Contact: React.FC = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* ============================================= */}
@@ -69,28 +79,11 @@ const Contact: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* 
-                    Replace the placeholder below with your Calendly embed.
-                    Example:
-                    <iframe
-                      src="https://calendly.com/YOUR-LINK"
-                      width="100%"
-                      height="650"
-                      frameBorder="0"
-                    />
-                  */}
-                  <div className="flex flex-col items-center justify-center py-20 px-8 text-center">
-                    <div className="w-16 h-16 bg-slate-200 rounded-2xl flex items-center justify-center mb-5">
-                      <Calendar className="w-8 h-8 text-slate-400" />
-                    </div>
-                    <p className="text-slate-500 text-lg font-medium mb-2">
-                      Calendly Widget Goes Here
-                    </p>
-                    <p className="text-slate-400 text-sm max-w-sm">
-                      Replace this placeholder with your Calendly embed link and
-                      the booking calendar will appear here.
-                    </p>
-                  </div>
+                  <div
+                    className="calendly-inline-widget"
+                    data-url="https://calendly.com/legalhalp"
+                    style={{ minWidth: "320px", height: "700px" }}
+                  />
                 </div>
               </div>
 
