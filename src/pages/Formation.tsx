@@ -160,6 +160,16 @@ const Formation: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            <div className="pt-8">
+              <Link
+                to="/formation/intake"
+                className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 px-10 rounded-xl shadow-[0_0_30px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 transition-all text-lg"
+              >
+                Get Started Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -226,6 +236,17 @@ const Formation: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            <div className="text-center mt-12">
+              <Link
+                to="/formation/intake"
+                className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-slate-900/20 transform hover:-translate-y-0.5 transition-all text-lg"
+              >
+                Get Started Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <p className="text-slate-400 text-sm mt-3">Takes about 10 minutes to complete</p>
+            </div>
           </div>
         </div>
       </section>
@@ -271,6 +292,16 @@ const Formation: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            <div className="text-center pt-4">
+              <Link
+                to="/formation/intake"
+                className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all text-lg"
+              >
+                Start Step 1 Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -307,6 +338,16 @@ const Formation: React.FC = () => {
                   <span className="text-slate-700 font-medium">{item}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                to="/formation/intake"
+                className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-slate-900/20 transform hover:-translate-y-0.5 transition-all text-lg"
+              >
+                Get All of This - Start Now
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </div>
           </div>
         </div>
