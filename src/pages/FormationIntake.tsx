@@ -80,6 +80,9 @@ const sectionTitleCls = "text-lg font-bold text-slate-900";
 const checkboxCls =
   "w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40 mt-0.5 flex-shrink-0";
 
+const GHL_WEBHOOK_URL =
+  "https://services.leadconnectorhq.com/hooks/BcV5yPPiVfG1L72P10vq/webhook-trigger/51abadf6-ec0c-4e72-b07e-4a1ea786b368";
+
 const FormationIntake: React.FC = () => {
   const navigate = useNavigate();
   const [ownerCount, setOwnerCount] = useState(1);
@@ -88,6 +91,7 @@ const FormationIntake: React.FC = () => {
   const [mailingAddressSame, setMailingAddressSame] = useState("yes");
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [agreeMarketing, setAgreeMarketing] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleOwnerCountChange = (val: string) => {
     const count = parseInt(val, 10) || 1;
@@ -108,6 +112,83 @@ const FormationIntake: React.FC = () => {
     setSelectedFilings((prev) =>
       prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]
     );
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const form = e.currentTarget;
+    const get = (name: string) => (form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)?.value || "";
+
+    const payload = {
+      first_name: get("first_name"),
+      last_name: get("last_name"),
+      email: get("email"),
+      phone: get("phone"),
+
+      entity_type: get("entity_type"),
+      state_of_formation: get("state_of_formation"),
+      business_industry: get("business_industry"),
+      business_description: get("business_description"),
+      desired_business_name: get("desired_business_name"),
+      backup_business_name: get("backup_business_name"),
+
+      owner_count: ownerCount,
+      owners: owners.map((o, i) => ({
+        owner_number: i + 1,
+        full_name: o.fullName,
+        ownership_pct: o.ownershipPct,
+        role: o.role,
+        ssn: o.ssn,
+        dob: o.dob,
+        address: o.address,
+      })),
+      irs_responsible_party: get("irs_responsible_party"),
+      management_structure: get("management_structure"),
+
+      business_email: get("business_email"),
+      business_phone: get("business_phone"),
+      signature_contact: get("signature_contact"),
+
+      business_address: get("business_address"),
+      mailing_address_same: mailingAddressSame,
+      mailing_address: mailingAddressSame === "no" ? get("mailing_address") : "Same as business address",
+      registered_agent_preference: get("registered_agent_preference"),
+
+      need_ein: get("need_ein"),
+      expected_employees: get("expected_employees"),
+      hiring_90_days: get("hiring_90_days"),
+      pay_contractors: get("pay_contractors"),
+
+      scorp_election: get("scorp_election"),
+      scorp_effective_date: get("scorp_effective_date"),
+
+      bank_account_help: get("bank_account_help"),
+      additional_account_access: get("additional_account_access"),
+      additional_filings: selectedFilings.join(", "),
+      previous_business_owner: get("previous_business_owner"),
+      filed_bankruptcy: get("filed_bankruptcy"),
+      tax_debt: get("tax_debt"),
+      converting_entity: get("converting_entity"),
+
+      agree_terms: agreeTerms,
+      agree_marketing: agreeMarketing,
+      source: "Formation Intake Form",
+    };
+
+    try {
+      await fetch(GHL_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        mode: "no-cors",
+      });
+    } catch {
+      // Webhook fire-and-forget; navigate regardless
+    }
+
+    navigate("/formation/thank-you");
   };
 
   return (
@@ -170,10 +251,7 @@ const FormationIntake: React.FC = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate("/formation/thank-you");
-              }}
+              onSubmit={handleSubmit}
               className="space-y-6"
             >
               {/* Your Info */}
@@ -189,23 +267,23 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       First Name <span className="text-red-500">*</span>
                     </label>
-                    <input type="text" className={inputCls} placeholder="First Name" required />
+                    <input type="text" name="first_name" className={inputCls} placeholder="First Name" required />
                   </div>
                   <div>
                     <label className={labelCls}>Last Name</label>
-                    <input type="text" className={inputCls} placeholder="Last Name" />
+                    <input type="text" name="last_name" className={inputCls} placeholder="Last Name" />
                   </div>
                   <div>
                     <label className={labelCls}>
                       Email <span className="text-red-500">*</span>
                     </label>
-                    <input type="email" className={inputCls} placeholder="Email" required />
+                    <input type="email" name="email" className={inputCls} placeholder="Email" required />
                   </div>
                   <div>
                     <label className={labelCls}>
                       Phone <span className="text-red-500">*</span>
                     </label>
-                    <input type="tel" className={inputCls} placeholder="Phone" required />
+                    <input type="tel" name="phone" className={inputCls} placeholder="Phone" required />
                   </div>
                 </div>
               </div>
@@ -221,7 +299,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       What type of entity are we forming for you? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="entity_type" className={selectCls} required>
                       <option value="">Select entity type</option>
                       {ENTITY_TYPES.map((e) => (
                         <option key={e} value={e}>{e}</option>
@@ -234,7 +312,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Choose your state of formation: <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="state_of_formation" className={selectCls} required>
                         <option value="">Select a State</option>
                         {US_STATES.map((s) => (
                           <option key={s} value={s}>{s}</option>
@@ -245,7 +323,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         What is your Business Industry? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="business_industry" className={selectCls} required>
                         <option value="">Select your business industry</option>
                         {INDUSTRIES.map((ind) => (
                           <option key={ind} value={ind}>{ind}</option>
@@ -258,7 +336,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       What will your business primarily do? <span className="text-red-500">*</span>
                     </label>
-                    <textarea className={inputCls} rows={3} placeholder="Describe your business activities" required />
+                    <textarea name="business_description" className={inputCls} rows={3} placeholder="Describe your business activities" required />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -266,11 +344,11 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Desired legal business name: <span className="text-red-500">*</span>
                       </label>
-                      <input type="text" className={inputCls} placeholder="e.g. Acme Holdings LLC" required />
+                      <input type="text" name="desired_business_name" className={inputCls} placeholder="e.g. Acme Holdings LLC" required />
                     </div>
                     <div>
                       <label className={labelCls}>Backup business name (optional):</label>
-                      <input type="text" className={inputCls} placeholder="In case the first name is taken" />
+                      <input type="text" name="backup_business_name" className={inputCls} placeholder="In case the first name is taken" />
                     </div>
                   </div>
                 </div>
@@ -378,7 +456,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Select your IRS "Responsible Party" <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="irs_responsible_party" className={selectCls} required>
                         <option value="">Select responsible party</option>
                         {owners.map((o, i) => (
                           <option key={i} value={o.fullName || `Owner ${i + 1}`}>
@@ -391,7 +469,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Management structure: <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="management_structure" className={selectCls} required>
                         <option value="">Select management structure</option>
                         <option value="member-managed">Member-Managed</option>
                         <option value="manager-managed">Manager-Managed</option>
@@ -412,19 +490,19 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Primary business email <span className="text-red-500">*</span>
                     </label>
-                    <input type="email" className={inputCls} placeholder="business@email.com" required />
+                    <input type="email" name="business_email" className={inputCls} placeholder="business@email.com" required />
                   </div>
                   <div>
                     <label className={labelCls}>
                       Primary business phone number <span className="text-red-500">*</span>
                     </label>
-                    <input type="tel" className={inputCls} placeholder="(555) 123-4567" required />
+                    <input type="tel" name="business_phone" className={inputCls} placeholder="(555) 123-4567" required />
                   </div>
                   <div className="sm:col-span-2">
                     <label className={labelCls}>
                       Who should we contact for any required signatures? <span className="text-red-500">*</span>
                     </label>
-                    <input type="text" className={inputCls} placeholder="Full name" required />
+                    <input type="text" name="signature_contact" className={inputCls} placeholder="Full name" required />
                   </div>
                 </div>
               </div>
@@ -440,7 +518,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Business physical address <span className="text-red-500">*</span>
                     </label>
-                    <input type="text" className={inputCls} placeholder="Street, City, State, ZIP" required />
+                    <input type="text" name="business_address" className={inputCls} placeholder="Street, City, State, ZIP" required />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -462,7 +540,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Registered Agent preference <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="registered_agent_preference" className={selectCls} required>
                         <option value="">Select preference</option>
                         <option value="legal-halp">Legal Halp will arrange a Registered Agent for me</option>
                         <option value="self">I will serve as my own Registered Agent</option>
@@ -473,8 +551,8 @@ const FormationIntake: React.FC = () => {
 
                   {mailingAddressSame === "no" && (
                     <div>
-                      <label className={labelCls}>Mailing address</label>
-                      <input type="text" className={inputCls} placeholder="Street, City, State, ZIP" />
+                    <label className={labelCls}>Mailing address</label>
+                    <input type="text" name="mailing_address" className={inputCls} placeholder="Street, City, State, ZIP" />
                     </div>
                   )}
                 </div>
@@ -491,7 +569,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Do you need us to obtain your EIN? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="need_ein" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No, I already have one</option>
@@ -501,7 +579,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Expected employees in next 12 months <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="expected_employees" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="0">0 (just me / owners)</option>
                       <option value="1-5">1 - 5</option>
@@ -513,7 +591,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Planning to hire employees in the next 90 days? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="hiring_90_days" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -523,7 +601,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Will you pay contractors? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="pay_contractors" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -543,7 +621,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       Would you like us to file your S-Corp tax election? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="scorp_election" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -554,7 +632,7 @@ const FormationIntake: React.FC = () => {
                     <label className={labelCls}>
                       If electing S-Corp, when should it take effect? <span className="text-red-500">*</span>
                     </label>
-                    <select className={selectCls} required>
+                    <select name="scorp_effective_date" className={selectCls} required>
                       <option value="">Select</option>
                       <option value="asap">As soon as possible</option>
                       <option value="next-year">Beginning of next tax year</option>
@@ -577,7 +655,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Would you like help setting up your business bank account? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="bank_account_help" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -587,7 +665,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Will anyone besides the owners need access to the account? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="additional_account_access" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -619,7 +697,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Has any owner previously owned a business? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="previous_business_owner" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -629,7 +707,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Has any owner filed bankruptcy? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="filed_bankruptcy" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -639,7 +717,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Does any owner owe federal or state tax debt? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="tax_debt" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -649,7 +727,7 @@ const FormationIntake: React.FC = () => {
                       <label className={labelCls}>
                         Are we converting from an existing entity? <span className="text-red-500">*</span>
                       </label>
-                      <select className={selectCls} required>
+                      <select name="converting_entity" className={selectCls} required>
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -771,10 +849,23 @@ const FormationIntake: React.FC = () => {
               <div className="pt-2 pb-4">
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white font-bold py-5 px-8 rounded-2xl shadow-xl shadow-slate-900/30 transform hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 text-lg flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-5 px-8 rounded-2xl shadow-xl shadow-slate-900/30 transform hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 text-lg flex items-center justify-center gap-2"
                 >
-                  <CheckCircle2 className="w-5 h-5" />
-                  Submit Your Business Formation
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-5 h-5" />
+                      Submit Your Business Formation
+                    </>
+                  )}
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-4">
                   Your information is encrypted and secure. We'll review everything and reach out within 1 business day.
