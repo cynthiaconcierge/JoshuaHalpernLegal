@@ -120,7 +120,7 @@ const Contact: React.FC = () => {
                   </h3>
 
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+12162006627"
                     className="flex items-center gap-3 bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all group"
                   >
                     <div className="w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-slate-700 transition-colors">
@@ -129,7 +129,7 @@ const Contact: React.FC = () => {
                     <div>
                       <p className="text-xs text-slate-400 font-medium">Phone</p>
                       <p className="text-slate-900 font-semibold text-sm">
-                        (123) 456-7890
+                        (216) 200-6627
                       </p>
                     </div>
                   </a>
