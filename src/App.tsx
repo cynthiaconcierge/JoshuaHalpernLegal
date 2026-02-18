@@ -23,6 +23,7 @@ import ContractDrafting from "./pages/services/ContractDrafting";
 import BrandProtection from "./pages/services/BrandProtection";
 import RealEstateLLC from "./pages/services/RealEstateLLC";
 import WebsiteCompliance from "./pages/services/WebsiteCompliance";
+import LawyerOnCall from "./pages/services/LawyerOnCall";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import PaymentPolicy from "./pages/PaymentPolicy";
@@ -48,6 +49,7 @@ const Layout = () => {
         <Route path="/services/brand-protection" element={<BrandProtection />} />
         <Route path="/services/real-estate-llc" element={<RealEstateLLC />} />
         <Route path="/services/website-compliance" element={<WebsiteCompliance />} />
+        <Route path="/services/lawyer-on-call" element={<LawyerOnCall />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/payment-policy" element={<PaymentPolicy />} />

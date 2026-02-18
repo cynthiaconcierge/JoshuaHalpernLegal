@@ -16,6 +16,7 @@ import {
   Star,
   UserCheck,
   MessageSquare,
+  PhoneCall,
 } from "lucide-react";
 import VideoCarousel from "@/components/VideoCarousel";
 
@@ -85,8 +86,8 @@ const Home: React.FC = () => {
                 <div className="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-slate-400 font-medium">
                   {[
                     "Former BigLaw Attorney",
-                    "Trusted by 500+ Businesses",
                     "Flat-Fee Guarantee",
+                    "Strategic Counsel to Founders & Entrepreneurs",
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-blue-400/70" />
@@ -113,8 +114,8 @@ const Home: React.FC = () => {
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-900 font-bold text-sm leading-tight">Strategic Counsel to</p>
-                  <p className="text-slate-500 text-xs">Founders and Entrepreneurs</p>
+                  <p className="text-slate-900 font-bold text-sm leading-tight">500+ Businesses</p>
+                  <p className="text-slate-500 text-xs">Protected</p>
                 </div>
               </div>
             </div>
@@ -321,6 +322,13 @@ const Home: React.FC = () => {
                   price: "$750",
                   description: "E-commerce, SaaS, online businesses",
                   slug: "/services/website-compliance",
+                },
+                {
+                  icon: PhoneCall,
+                  title: "Lawyer-on-Call",
+                  price: "From $500/mo",
+                  description: "On-demand legal counsel, monthly retainer",
+                  slug: "/services/lawyer-on-call",
                 },
               ].map((service, index) => (
                 <div

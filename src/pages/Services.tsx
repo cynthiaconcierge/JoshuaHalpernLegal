@@ -15,6 +15,7 @@ import {
   Globe,
   AlertTriangle,
   Info,
+  PhoneCall,
 } from "lucide-react";
 
 /* -------------------------------------------------- */
@@ -228,6 +229,30 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         whyItMatters:
           "A brand without legal protection is just a name, and names get stolen every day. Lock yours down before someone else does.",
         stripeLink: "https://buy.stripe.com/8x228rca6geJ7G105Y3oA06",
+      },
+    ],
+  },
+  {
+    id: "oncall",
+    icon: PhoneCall,
+    label: "Lawyer-on-Call",
+    packages: [
+      {
+        name: "Lawyer-on-Call Retainer",
+        price: "From $500/mo",
+        whoItsFor:
+          "Business owners and founders who want ongoing, on-demand access to a real attorney without paying hourly rates or hiring in-house counsel.",
+        includes: [
+          "Monthly on-call access to a licensed attorney",
+          "Contract review and drafting as needed",
+          "Transaction negotiation support",
+          "General corporate counsel and compliance guidance",
+          "Strategic business advisory on legal matters",
+          "Priority response times (within 24 hours)",
+          "Rollover availability for lighter months",
+        ],
+        whyItMatters:
+          "Most businesses don't need a full-time lawyer, but they do need one they can call. The Lawyer-on-Call retainer gives you ongoing access to experienced legal counsel at a predictable monthly cost, so you can make confident decisions without racking up surprise bills.",
       },
     ],
   },

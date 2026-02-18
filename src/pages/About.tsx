@@ -151,27 +151,23 @@ const About: React.FC = () => {
               {[
                 {
                   icon: GraduationCap,
-                  text: "J.D., [Law School Name]",
+                  text: "J.D., Cleveland-Marshall College of Law",
                 },
                 {
                   icon: Briefcase,
-                  text: "Former Associate, [BigLaw Firm Name]",
+                  text: "Former BigLaw Associate, Taft, Stettinius & Hollister LLP (1,500+ attorneys)",
                 },
                 {
                   icon: MapPin,
-                  text: "Licensed in [State(s)]",
+                  text: "Licensed in Ohio, and partnered with local attorneys nationwide (for jurisdiction-specific matters)",
                 },
                 {
                   icon: FileText,
-                  text: "Practice Areas: Business Formation, Estate Planning, Contracts, IP, Real Estate",
-                },
-                {
-                  icon: Building2,
-                  text: "[X] businesses formed",
+                  text: "Practice Areas: Business Formation, Estate Planning, Contracts, IP, Real Estate, Mergers & Acquisitions, Venture Capital, General Counsel",
                 },
                 {
                   icon: ScrollText,
-                  text: "[X] estate plans drafted",
+                  text: "1,000+ estate plans drafted",
                 },
               ].map((item, index) => (
                 <div
