@@ -151,7 +151,7 @@ const Formation: React.FC = () => {
                 </div>
                 <div className="aspect-video">
                   <iframe
-                    src="https://www.youtube.com/embed/112KFGQaFcg?rel=0"
+                    src="https://www.youtube.com/embed/112KFGQaFcg?rel=0&modestbranding=1"
                     title="Watch Before You Form Your LLC"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
